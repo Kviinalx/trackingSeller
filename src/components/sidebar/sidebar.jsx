@@ -16,7 +16,7 @@ const MENU_ITEMS = [
     title: 'Importar',
     icon: <Import />,
     submenu: [
-      { label: 'Recolección de pedidos', path: '/import/collection' },
+      { label: 'Recolección de pedidos', path: '/importacion/detalles' },
       { label: 'Asignación de flota', path: '/import/fleet' },
       { label: 'Carga manual', path: '/import/manual' }
     ]
@@ -25,7 +25,7 @@ const MENU_ITEMS = [
     title: 'Dashboard',
     icon: <LayoutDashboard />,
     submenu: [
-      { label: 'Patentes', path: '/dashboard/patents' }
+      { label: 'Patentes', path: '/dashboard/patentes' }
     ]
   }
 ];
@@ -62,6 +62,7 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     console.log('Cerrando sesión...');
+    
   };
 
   return (
