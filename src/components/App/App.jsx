@@ -15,8 +15,8 @@ function App() {
     <>
         <Router>
             <Routes>
-            <Route path="/" element={<Layout />}/>
-            <Route path="/login" element={<Login />}/>
+            <Route path="/" element={<Login />}/>
+            <Route path="/layout" element={<Layout />}/>
                 <Route path="/orders/list" element={<OrdersList />} />
                 <Route path="/creacionOrdenManual" element={<CreacionOrdenMnual />} />
                 <Route path="/importacion/detalles" element={<DetallesImportacion />} />

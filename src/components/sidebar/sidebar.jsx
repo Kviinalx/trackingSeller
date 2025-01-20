@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation,useNavigate } from 'react-router-dom';
 import { ChevronDown, Menu, X, LayoutDashboard, Archive, Import, LogOut } from 'lucide-react';
 
 // Definición de las rutas del menú
@@ -50,6 +50,7 @@ const SubMenuItem = ({ item }) => {
 };
 
 const Sidebar = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(true);
   const [openMenus, setOpenMenus] = useState({});
 
@@ -61,6 +62,7 @@ const Sidebar = () => {
   };
 
   const handleLogout = () => {
+    navigate('/');
     console.log('Cerrando sesión...');
     
   };

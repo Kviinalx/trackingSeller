@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { ChevronDown, Truck, Package} from 'lucide-react';
+import { ChevronDown, Truck, Package, Eye} from 'lucide-react';
 import Sidebar from '../../components/sidebar/sidebar';
 import Navbar from '../../components/navbar/navbar';
+import OrderDetailModal from '../../components/modalVerDetalle';
+
 
 const Seguimiento = () => {
   // Datos de ejemplo para las métricas generales
@@ -34,26 +36,90 @@ const Seguimiento = () => {
         { id: "OC002", estado: "En Ruta", direccion: "Calle Secundaria 456", fecha: "2024-01-15" }
       ]
     },
-    {
-      patente: "XYZ789",
-      conductor: "Ignacio Shala",
-      metricas: {
-        gestionadas: 30,
-        sinAsignar: 3,
-        asignadas: 27,
-        pendientes: 10,
-        enRuta: 20,
-        entregadas: 15,
-        noEntregadas: 1
-      },
-      ordenes: [
-        { id: "OC003", estado: "Pendiente", direccion: "Plaza Central 789", fecha: "2024-01-15" },
-        { id: "OC004", estado: "Asignada", direccion: "Av. Libertad 012", fecha: "2024-01-15" }
-      ]
-    }
   ]);
 
   const [expandedPatente, setExpandedPatente] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // Datos extendidos de ejemplo para las órdenes
+    const extendedOrders = {
+      "OC001": {
+        id: "OC001",
+        estado: "Entregada",
+        direccion: "Av. Principal 123",
+        fecha: "2024-01-15",
+        fechaEntrega: "2024-01-16",
+        producto: {
+          nombre: "Laptop Dell XPS",
+          cantidad: 1,
+          sku: "DELL-XPS-15",
+          categoria: "Electrónicos",
+          descripcion: "Laptop Dell XPS 15 pulgadas, 16GB RAM, 512GB SSD"
+        },
+        fotos: [
+          "/api/placeholder/400/400",
+          "/api/placeholder/400/400",
+          "/api/placeholder/400/400"
+        ]
+      },
+      "OC002": {
+        id: "OC002",
+        estado: "Entregada",
+        direccion: "Av. Principal 123",
+        fecha: "2024-01-15",
+        fechaEntrega: "2024-01-16",
+        producto: {
+          nombre: "Laptop Dell XPS",
+          cantidad: 1,
+          sku: "DELL-XPS-15",
+          categoria: "Electrónicos",
+          descripcion: "Laptop Dell XPS 15 pulgadas, 16GB RAM, 512GB SSD"
+        },
+        fotos: [
+          "/api/placeholder/400/400",
+          "/api/placeholder/400/400",
+          "/api/placeholder/400/400"
+        ]
+      },
+      // ... más órdenes con detalles similares
+    };
+
+    const handleViewOrder = (orderId) => {
+      setSelectedOrder(extendedOrders[orderId]);
+      setIsModalOpen(true);
+    };
+
+      // Modificar la parte de la tabla de órdenes dentro del componente existente
+  const orderTableRow = (orden) => (
+    <tr key={orden.id}>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="flex items-center">
+          <Package className="h-5 w-5 mr-2 text-gray-400" />
+          {orden.id}
+        </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <span className={`${getStatusColor(orden.estado)} font-medium`}>
+          {orden.estado}
+        </span>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        {orden.direccion}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-gray-500">
+        {orden.fecha}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-right">
+        <button
+          onClick={() => handleViewOrder(orden.id)}
+          className="text-blue-600 hover:text-blue-800 transition-colors"
+        >
+          <Eye size={20} />
+        </button>
+      </td>
+    </tr>
+  );
 
   const getStatusColor = (status) => {
     const colors = {
@@ -100,6 +166,13 @@ const Seguimiento = () => {
             ))}
           </div>
         </div>
+
+      {/* Agregar el Modal */}
+      <OrderDetailModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        order={selectedOrder}
+      />
 
         {/* Detalles por Patente */}
         <div className="bg-white rounded-lg shadow">
@@ -160,6 +233,9 @@ const Seguimiento = () => {
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                               Fecha
                             </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                              Acciones
+                            </th>
                           </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
@@ -181,6 +257,16 @@ const Seguimiento = () => {
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap text-gray-500">
                                 {orden.fecha}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex justify-center items-center">
+                                  <button
+                                    onClick={() => handleViewOrder(orden.id)}
+                                    className="text-blue-600 hover:text-blue-800 transition-colors"
+                                  >
+                                    <Eye size={20} />
+                                  </button>
+                                </div>
                               </td>
                             </tr>
                           ))}

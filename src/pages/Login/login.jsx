@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+
+  const handleLogin = () => {
+    navigate('/layout');
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -91,7 +97,7 @@ const Login = () => {
             <button
               type="submit"
               className="relative w-full py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 overflow-hidden group"
-              href="/orders/list"
+              onClick={handleLogin}
             >
               <span className="absolute w-64 h-64 mt-12 group-hover:-mt-24 transition-all duration-500 ease-in-out -translate-x-20 -translate-y-32 bg-blue-800 rotate-45"></span>
               <span className="relative">Iniciar sesión</span>
